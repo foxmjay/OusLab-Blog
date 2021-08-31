@@ -1,0 +1,276 @@
+{% extends 'backend/layouts/base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block css %}
+    
+    <link href="/static/backend/libs/summernote/summernote.min.css" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block content %}
+
+                
+<section class="nav nav-page">
+    <div class="container">
+        <div class="row">
+            <div class="span7">
+                <header class="page-header">
+                    <h3>Posts List<br/>
+                        <small>list of posts</small>
+                    </h3>
+                </header>
+            </div>
+            <div class="page-nav-options">
+                <div class="span9">
+                    <ul class="nav nav-pills">
+                        <li>
+                            <a href="/dashboard/posts"><i class="icon-list-alt icon-large" style="padding-left: 1px;"></i></a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+
+
+  <section id="my-account-security-form" class="page container">
+
+    {% for message in messages %}
+        <div class="alert alert-block alert-info">
+            <p>{{ message }} </p>
+            {% if form.errors %} 
+                {{ form.errors.as_ul }}
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <form action='/dashboard/posts/update/{{post.id}}' method='POST' id='form_id' class='form-signin' autocomplete='on' enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container">
+
+            <div class="row">
+                <div  class="span8">
+                    <fieldset>
+
+                        <div class="control-group ">
+                            <div class="control-group">
+                                <input id="published" name="published" class="span8" type="checkbox"  style="display:inline-block !important; width: 10px;margin-top: -4px;" {% if post.published %} checked {% else %} {% endif %}>
+                                <label class="control-label" style="display:inline-block !important;" >Published</label>
+                            </div>
+                        </div>
+                       
+                        <div class="control-group ">
+                            <label class="control-label">Title</label>
+                            <div class="controls">
+                                <input id="title" name="title" class="span8" type="text" value="{% if form %}{{form.title.value | safe }} {% else %} {{ post.title }} {% endif %}" autocomplete="true">
+
+                            </div>
+                        </div>
+
+                        
+                        <div class="control-group ">
+                            <label class="control-label">Description</label>
+                            <div class="controls">
+                                <textarea class="span8" id="description" name="description">{% if form %}{{form.description.value | safe }} {% else %} {{ post.description }} {% endif %}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="control-group ">
+                            <label class="control-label">Type</label>
+                            <div class="controls">
+
+                                <select class="span8" id="post_type" name="post_type">
+                                    {% for ptype in post_types %}
+                                        {% if form %}
+                                            <option value="{{form.post_type.value}}" selected>{{form.post_type.value}}</option>
+                                        {% else %}
+                                            {% if ptype in post.post_type %}
+                                                <option value="{{ptype}}" selected>{{ptype}}</option>
+                                            {% else %}
+                                                <option value="{{ptype}}">{{ptype}}</option>
+                                            {% endif %}
+                                        {% endif %}
+
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+
+
+                <div  class="span8">
+                    <fieldset>
+
+                        <div class="control-group ">
+                            <label class="control-label">Published Date</label>
+                            <div class="controls">
+                                <input type="text" class="form-control" id="published_at" name="published_at" class="span8" value="{% if form %}{{form.published_at.value | safe }} {% else %} {{ post.published_at|date:'Y-m-d H:i:00' }} {% endif %}" required>
+                            </div>
+                        </div>
+
+                        <div class="control-group ">
+
+                            <label class="control-label">Front Image</label>
+                            <div class="controls">
+                                <input id="front_image" name="front_image" class="span8" type="file" >
+                                <img src="{% if post.front_image  %}{{post.front_image.url}} {% endif %}" width="50px" alt="N/A">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Content Image</label>
+                            <div class="controls">
+                                <input id="content_image" name="content_image" class="span8" type="file" >
+                                <img src="{% if post.content_image  %}{{post.content_image.url}} {% endif %}" width="50px" alt="N/A">
+
+                            </div>
+                        </div>
+
+                        <div class="control-group ">
+                            <label class="control-label">FB comment URL</label>
+                            <div class="controls">
+                                <input id="fb_comment_url" name="fb_comment_url" class="span8" type="text" value="{% if form %}{{form.fb_comment_url.value | safe }} {% else %} {{ post.fb_comment_url }} {% endif %}" autocomplete="true">
+
+                            </div>
+                        </div>
+
+
+
+
+                    </fieldset>
+                </div>
+            </div>
+
+            <div class="row">
+                <div  class="span16">
+                    <fieldset class="editor_custom_style">
+                       
+                        <!--<div id="editor" style="height: 600px;">
+                            {% if form %}{{form.content.value | safe }} {% else %} {{ post.content | safe }} {% endif %}
+                        </div> -->
+
+                        <div id="content_" name="content_">{% if form %}{{form.content.value | safe }} {% else %} {{ post.content | safe }} {% endif %}</div>
+
+                        <textarea style="display:none" id="content" name="content"></textarea> 
+
+                    </fieldset>
+                </div>
+            </div>
+
+            <input type="hidden" id="update_type" name="update_type" value="update_only">
+
+            <footer id="submit-actions" class="form-actions">
+                <button id="submit-button" type="submit" class="btn btn-primary" name="action" value="update_only">Save</button>
+                <button id="submit-button" type="submit" class="btn btn-primary" name="action" value="update_continue">Save and continue</button>
+                <a href="/dashboard/posts" class="btn"  value="CANCEL">Cancel</a>
+            </footer>
+        </div>
+    </form>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+
+    <script src="/static/backend/libs/summernote/summernote.min.js"></script>
+
+    <!-- <script src="/static/frontend/js/prism.js"></script> -->
+
+    <script>
+
+
+     $(document).ready(function() {
+
+        // $("pre").each(function(){
+        //     console.log($(this).html());
+        //     $(this).html('<code class="language-python"'+$(this).html()+"</code>"); // $(this).html());
+        // });
+
+        $('#form_id').submit(function(event) {
+            $("#update_type").val(document.activeElement['value']);
+            $("#content").val($('#content_').summernote('code'));
+            //console.log($('#content_').summernote('code'));
+            return true; // return false to cancel form action
+        });
+
+            var editor = $('#content_').summernote({
+                height: 600,
+                callbacks: {
+                    onImageUpload: function(images) {
+                        uploadImage(images[0]);
+                    },
+                    onMediaDelete : function(image){
+                        deleteImage(image);
+
+                    }
+                },
+                toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']],
+                ]
+            });
+
+
+            function uploadImage(image) {
+                data = new FormData();
+                data.append("path", image);
+                data.append("csrfmiddlewaretoken",'{{ csrf_token }}' );
+
+                $.ajax({
+                data: data,
+                type: "POST",
+                url: "/dashboard/library/store",
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    editor.summernote('insertImage', data['url'], data['data_filename']);
+                }
+                });
+            }
+
+            function deleteImage(image){
+                data = new FormData();
+                data.append("data_filename", image.attr('data-filename'));
+                data.append("csrfmiddlewaretoken",'{{ csrf_token }}' );
+
+                $.ajax({
+                data: data,
+                type: "POST",
+                url: "/dashboard/library/delete",
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    console.log(data)
+                }
+                });
+            }
+        });
+
+    /*$('#content').summernote('code', markupStr);*/
+
+    $('#published_at').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'en',
+        format: 'Y-m-d H:i:00',
+        //mask:'9999-19-39 29:59:59'
+        startDate:  true
+    });
+
+       
+    </script>
+
+{% endblock %}

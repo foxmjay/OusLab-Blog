@@ -1,0 +1,267 @@
+
+{% extends 'frontend/layouts/base.html' %}
+
+{% block css %} 
+
+<!-- <link rel="stylesheet" href="/static/frontend/css/prism.css"> -->
+
+<style>
+  h1 {
+    /* font-weight: bolder; */
+    font-size: 40px;
+    padding-top: 10px;
+  }
+
+  .ql-align-center p{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+
+  .content_style img {
+      width: 25%;
+  }
+
+  .img-overlay {
+      position: fixed;
+      top: 10%;
+      max-height: 80%;
+      left: 50%;
+      transform: translate(-50%, 0) scale(0, 0);
+      z-index: 10;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+      transition: all .3s ease;
+  }
+
+  .overlay-dark {
+      left: 0;
+      top: 0;
+      position: fixed;
+      background-color: #000;
+      opacity: .9;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      display: none;
+  }
+
+  pre {
+    background-color: #bbddc7;
+    width: 95%;
+    max-height: 300px;
+    overflow: auto;
+    color: black;
+    /* resize:vertical; */
+}
+
+iframe {
+  width: 100%;
+  height: 500px;
+}
+
+.IN-widget span{
+  
+  width: 100px;
+  height: 30px;
+  padding: 20px 20px !important;
+  background-color: #0073b1 ;
+  border-radius: 5px;
+}
+
+</style>
+
+
+{% endblock %}
+
+{% block title %} {{ post.title }} {% endblock %}
+
+{% block metadata %}
+  <meta content="{{ post.description }}" name='description'/>
+  <meta content='OusLab , Oussama Ousmoi , {% for tag in post.tag_set.all %}{{tag.name}} , {% endfor %}  ' name='keywords'/>
+
+  <meta property="fb:admins" content=""/>
+  <meta property="og:title" content="{{ post.title }}" />
+  <meta property="og:description" content="{{ post.description }}" />
+  <meta property="og:type" content="text/html" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:image" content="http://{{ request.get_host}}{% if post.front_image  %}{{post.front_image.url}} {% endif %}" />
+{% endblock %}
+
+{% block content %}
+
+  
+<div class="container">
+
+<div class="row">
+
+	
+  <div class="span9">
+    <!--Blog Post-->
+    <div class="blog-post">
+       <h1>{{post.title}}</h1> 
+
+      <div class="postmetadata">
+        <ul>
+            <li>
+              <i class="icon-user"></i> <a href="#">{{ post.owner.username}}</a>
+            </li>
+
+            <li>
+               <i class="icon-calendar"></i>{{ post.published_at}}
+            </li>
+
+            <li>
+              <!-- <i class="icon-comment"></i> <a href="#">{{ post.comment_set.count }} Comments</a> -->
+              <i class="icon-comment"></i> <a href="#"><span class="fb-comments-count" data-href="{{ request.build_absolute_uri }}"></span> Comments</a>
+
+            </li>
+            <li>
+              <i class="icon-tags"></i>
+              {% for tag in post.tag_set.all %}
+                <a href="/posts/tag/{{tag.id}}">{{tag.name}}</a>,
+              {% endfor %} 
+               
+            </li>
+        </ul>
+      </div>
+
+
+    
+        <img style="border-radius: 10px;"  src="{% if post.front_image  %}{{post.front_image.url}} {% endif %}" alt="{% for tag in post.tag_set.all %}{{tag.name}}_{% endfor %}" loading="lazy" onerror='this.src="/static/frontend/img/img_notfound.png"' >
+        <p style="font-size: 18px; padding-bottom: 20px;">{{ post.description}}</p>	
+
+        <div class="content_style">
+          {{ post.content | safe}}
+        </div>
+        
+    </div>
+
+    <div class="overlay-dark"></div>
+    <img class="img-overlay"> 
+
+    <!--/.Blog Post-->
+    
+    <div class="comments">
+
+      <script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
+      <script type="IN/Share" data-url="{{ request.build_absolute_uri }}"></script>
+
+      <div class="fb-share-button" data-href="{{ request.build_absolute_uri }}" data-layout="button_count" data-size="large"><a target="_blank" href="" class="fb-xfbml-parse-ignore">Share</a></div>
+
+      <div class="fb-like" data-href="" data-width="" data-layout="standard" data-action="like" data-size="large" data-share="false"></div>
+
+
+      <h2>Comments :</h2>
+
+
+      <div class="post-footer">
+        <section id="isso-thread"></section>
+        <script data-isso="https://isso.ouslab.com/" data-isso-vote="true"  data-isso-css="true"  data-isso-require-author="true" src="https://isso.ouslab.com/js/embed.min.js"></script>
+      </div>
+    
+    </div>
+
+    <!--Comments-->
+
+   
+    <!-- <div class="comments">
+      {% for comment in post.comment_set.all %}
+      <div class="media">
+         <a href="#" class="pull-left"><img src="/static/frontend/img/img-60x60.jpg" class="media-object" alt='' /></a>
+        <div class="media-body">
+          <div class="postmetadata" style="margin-bottom: 0px;">
+            <ul>
+                <li>
+                  <i class="icon-user"></i> <a href="javascript:void(0);">{{ comment.username }}</a>
+                </li>
+    
+                <li>
+                   <i class="icon-calendar"></i>{{ comment.created_at}}  
+                </li>
+            </ul>
+          </div>
+          {{ comment.message}}
+        </div>
+      </div>
+      {% endfor %}
+     
+      {% for message in messages %}
+        <div class="alert alert-block alert-info">
+            <p>{{ message }} </p>
+            {% if form.errors %} 
+                {{ form.errors.as_ul }}
+            {% endif %}
+        </div>
+      {% endfor %}
+     
+
+      <form action='/comments/send/{{ post.id }}' method='POST' id='form_id' class='form-signin' autocomplete='on'>
+        {% csrf_token %}
+         <input class="span8"  type="text" placeholder="Name" id="username" name="username" value="{% if form %}{{form.username.value}}{% endif %}"  required/> 
+         <input class="span8" type="email" placeholder="Email" required id="email" name="email" value="{% if form %}{{form.email.value}}{% endif %}" required /> 
+         <textarea class="span8" rows="10" placeholder="Message" id="message" name="message" required > {% if form %}{{form.message.value}}{% endif %} </textarea>
+         <br>
+         {{form.captcha}}
+
+        <button type="submit" class="btn btn-large btn-primary">Submit</button>
+
+    </form>
+
+     
+
+    </div> -->
+
+    <!--/.Comments-->
+    
+  </div>	
+
+
+
+  <div class="span3">
+    <div class="side-bar">
+
+      <h3>Categories</h3>
+      <ul class="nav nav-list">
+        {% for categorie in post.categorie_set.all %}
+          <li><a href="/posts/categorie/{{categorie.id}}">{{ categorie.name  }}</a></li>
+        {% endfor %}
+      </ul>
+
+    </div>
+
+
+    <div class="side-bar">
+      <h3>Tags</h3>
+
+      {% for tag in post.tag_set.all %}
+        <a href="/posts/tag/{{tag.id}}">{{tag.name}}</a>,
+      {% endfor %}
+    </div>
+
+    {% include "frontend/buymeacoffee.html" %}
+
+    {% include "frontend/recent_posts.html" %}
+
+    {% include "frontend/ads/side_ads.html" %} 
+
+  </div>
+
+  
+  <!--==================-->
+</div>
+
+</div>
+
+
+<!-- /.Row View -->
+
+{% endblock %}
+
+{% block js %}
+
+
+
+<script src="/static/frontend/js/image-popup.js"></script>
+
+{% endblock %}

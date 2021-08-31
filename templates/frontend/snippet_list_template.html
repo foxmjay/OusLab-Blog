@@ -1,0 +1,27 @@
+<div class="blog-post" style="margin-bottom: 0; padding: 0 0;">
+    <a  href="/posts/{{ post.url_title }}"><h2 style="margin: 10px 0;"> <b>{{ post.title}}</b></h2></a>
+    <p style="margin: 0 0;">{{ post.description}}</p>	 
+
+    <div class="postmetadata" style="margin-bottom: 0;padding: 10px 0;">
+      <ul>
+          <li>
+            <i class="icon-user"></i> <a href="#">{{ post.owner.username}}</a>
+          </li>
+
+          <li>
+              <i class="icon-calendar"></i>{{ post.published_at}}
+          </li>
+
+          <!-- <li>
+            <i class="icon-comment"></i> <a href="#">{{ post.comment_set.count }} Comments</a>
+          </li> -->
+          <li>
+            <i class="icon-tags"></i>
+            {% for tag in post.tag_set.all %}
+              <a href="/posts/tag/{{tag.id}}">{{tag.name}}</a>,
+            {% endfor %} 
+              
+          </li>
+      </ul>
+    </div>
+  </div>

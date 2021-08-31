@@ -1,0 +1,90 @@
+
+{% extends 'frontend/layouts/base.html' %}
+
+{% block css %}
+
+{% endblock%}
+
+{% block title %} Privacy Policy {% endblock %}
+
+{% block metadata %}
+  <meta content="Privacy Policy" name='description'/>
+  <meta content='OusLab, Oussama Ousmoi' name='keywords'/>
+
+  <meta property="og:title" content="Privacy Policy" />
+  <meta property="og:type" content="text/html" />
+  <meta property="og:url" content="http://{{ request.get_host}}" />
+  <meta property="og:image" content="http://{{ request.get_host}}/static/frontend/img/logo_ouslab.png" />
+{% endblock %}
+
+{% block content %}
+
+  
+<div class="container">
+  <!--PAGE TITLE-->
+
+<div class="row">
+  <div class="span12">
+  <div class="page-header">
+      <h1>
+        Privacy Policy
+    </h1>
+  </div>
+  </div>
+</div>
+
+<!-- /. PAGE TITLE-->
+
+<div class="row" style="min-height: 570px;">
+
+
+
+    <span class="span8">
+
+
+
+    <h3></h3>
+
+        <address>
+        <strong> Privacy Policy :</strong><br>
+        Effective date: May 27, 2021<br><br>
+        
+        OusLab operates the www.ouslab.com website.<br>
+        This page informs you of our policies regarding the collection, use, and disclosure of personal data when browsing my website<br><br>
+        
+        <strong>Cookies and Web Beacons :</strong><br>
+        No data are collected through cookies while browsing www.ouslab.com website<br><br>
+        
+       <strong>Comments :</strong><br>
+        Only the nickname and the email are collected upon the comment on any of the articls on this website as countermeasure against spam commnets<br><br>
+        
+       <strong>Our Current or future Advertising Partners:</strong><br>
+        Google<br>
+        Amazon<br>
+        Yahoo Publisher Network<br>
+        BuySell Ads<br>
+        AdPushup<br>
+        
+        </address>      
+      <div class="social_networks">
+        <a href="https://youtube.com/foxmjay"  target="_blank"><span>Youtube</span></a>
+        <a href="https://www.facebook.com/OusLabCom" target="_blank" ><span>Facebook</span></a>
+        <a href="https://github.com/foxmjay" target="_blank"><span>Github</span></a>
+        <a href="mailto:foxmjay@gmail.com" target="_blank"><span>Email</span></a>
+        <a href="http://linkedin.com" target="_blank"><span>Linkedin</span></a>
+
+      </div>
+
+    </span>
+
+</div>
+
+
+</div>
+
+
+
+
+<!-- /.Row View -->
+
+{% endblock %}

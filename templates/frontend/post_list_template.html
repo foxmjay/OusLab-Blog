@@ -1,0 +1,39 @@
+<div class="blog-post">
+    <a  href="/posts/{{ post.url_title }}"><h2>{{ post.title}}</h2></a>
+
+    <div class="postmetadata">
+      <ul>
+          <li>
+            <i class="icon-user"></i> <a href="#">{{ post.owner.username}}</a>
+          </li>
+
+          <li>
+             <i class="icon-calendar"></i>{{ post.published_at}}
+          </li>
+
+          <!-- <li> -->
+            <!-- <i class="icon-comment"></i> <a href="#">{{ post.comment_set.count }} Comments</a> -->
+            <!-- <i class="icon-comment"></i> <a href="#"><span class="fb-comments-count" data-href="{{ request.get_host }}/posts/{{ post.url_title }}"></span>  Comments</a> -->
+
+          <!-- </li>  -->
+          <li>
+            <i class="icon-tags"></i>
+            {% for tag in post.tag_set.all %}
+              <a href="/posts/tag/{{tag.id}}">{{tag.name}}</a>,
+            {% endfor %} 
+             
+          </li>
+      </ul>
+    </div>
+
+    <div class="post_image">
+      <a  href="/posts/{{ post.url_title }}">
+        <img style="border-radius: 10px;" src="{% if post.front_image  %}{{post.front_image.url}} {% endif %}" alt="{% for tag in post.tag_set.all %}{{tag.name}}_{% endfor %}" loading="lazy" onerror='this.src="/static/frontend/img/img_notfound.png"'>
+      </a>
+    </div>
+
+    <div class="post_description"> 
+      <p style="font-size: 18px;">{{ post.description}}<br> <a class="btn" style="background: #62a779; color: aliceblue; text-shadow: none;" href="/posts/{{ post.url_title }}">Read More</a>			</p>
+    </div>
+
+  </div>

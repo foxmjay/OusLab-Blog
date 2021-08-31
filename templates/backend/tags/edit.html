@@ -1,0 +1,85 @@
+{% extends 'backend/layouts/base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block css %}
+    
+     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+
+{% endblock %}
+
+
+{% block content %}
+
+                
+<section class="nav nav-page">
+    <div class="container">
+        <div class="row">
+            <div class="span7">
+                <header class="page-header">
+                    <h3>Edit Tag<br/>
+                        <small>Tag edition</small>
+                    </h3>
+                </header>
+            </div>
+            <div class="page-nav-options">
+                <div class="span9">
+                    <ul class="nav nav-pills">
+                        <li>
+                            <a href="/dashboard/tags"><i class="icon-list-alt icon-large" style="padding-left: 1px;"></i></a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+
+
+  <section id="my-account-security-form" class="page container">
+
+    {% for message in messages %}
+        <div class="alert alert-block alert-info">
+            <p>{{ message }} </p>
+            {% if form.errors %} 
+                {{ form.errors.as_ul }}
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <form action='/dashboard/tags/update/{{tag.id}}' method='POST' id='form_id' class='form-signin' autocomplete='on' enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container">
+
+            <div class="row">
+                <div id="acct-password-row" class="span16">
+                    <fieldset>
+                       
+                        <div class="control-group ">
+                            <label class="control-label">Name</label>
+                            <div class="controls">
+                                <input id="name" name="name" class="span16" type="text" value="{% if form %}{{form.name.value | safe }} {% else %} {{ tag.name }} {% endif %}" autocomplete="true">
+
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+
+            </div>
+
+            <footer id="submit-actions" class="form-actions">
+                <button id="submit-button" type="submit" class="btn btn-primary" name="action" value="CONFIRM">Save</button>
+                <a href="/dashboard/tags" class="btn"  value="CANCEL">Cancel</a>
+            </footer>
+        </div>
+    </form>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

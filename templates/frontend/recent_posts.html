@@ -1,0 +1,27 @@
+<div class="side-bar">
+    <h3>Recent Posts</h3>
+    {% for rp in recent_posts %}
+    <div  style="padding-bottom:5px;">
+      <div class="side-bar-image" >
+        <a href="/posts/{{ rp.url_title }}"><img style="border-radius: 5px;" src="{% if rp.front_image  %}{{rp.front_image.url}} {% endif %}" alt="{% for tag in rp.tag_set.all %}{{tag.name}}_{% endfor %}" loading="lazy" onerror='this.src="/static/frontend/img/img_notfound.png"'></a>
+      </div>
+      <div class="side-bar-title">
+        <a href="/posts/{{ rp.url_title }}"> <p style="color: #62a779;"> {{ rp.title }} </p></a>
+      </div>
+      <div style="width: 300px; padding-top: 15px;">
+      <small><i class="icon-user"></i> <a href="#"><span style="color: grey;"> {{ rp.owner.username }}</span> </a>, <i class="icon-calendar"></i>{{ rp.published_at }}</small>
+    </div> 
+    </div>
+    <hr>
+    {% endfor %}
+
+    <!-- <ul class="recent-post">
+      {% for rp in recent_posts %}
+        <li><a href="/posts/{{ rp.url_title }}" ><strong style="color: #62a779;">{{ rp.title }} </strong></a>
+          <small><i class="icon-user"></i> <a href="#"><span style="color: grey;"> {{ rp.owner.username }}</span> </a>, <i class="icon-calendar"></i>{{ rp.published_at }}</small>
+        </li>
+      {% endfor %}		
+
+    </ul> -->
+
+</div>

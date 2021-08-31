@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>OusLab - {% block title %}{% endblock %} </title>
+    <meta property="fb:app_id" content="" />
+
+    {% block metadata %}{% endblock %}
+
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="OusLab">
+    <!-- Bootstrap -->
+    <link href="/static/frontend/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/frontend/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/static/frontend/css/style.css" rel="stylesheet"> 
+    
+    <!--Font-->
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
+    
+    <link href="/static/frontend/css/font-awesome.css" rel="stylesheet">
+      
+      <!-- Fav and touch icons -->
+      <link rel="shortcut icon" href="/static/frontend/img/favicon.png">
+
+      <style>
+        .container{
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+        .bmc-btn-text{
+          color:white;
+        }
+
+        .buymeacoffee{
+          padding: 5px 15%;
+        }
+      </style>
+      
+    {% block css %}{% endblock %}
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- <script async src=""></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '');
+    </script> -->
+
+
+  </head>
+  <body>
+  <!--HEADER ROW-->
+  <div id="header-row">
+    <div class="container">
+      <div class="row">
+              <!--LOGO-->
+              <div class="span3"><a class="brand" href="/"><img class="logo" alt="OusLab_logo" src="/static/frontend/img/logo_ouslab.png"/></a></div>
+              <!-- /LOGO -->
+
+            <!-- MAIN NAVIGATION -->  
+              <div class="span9">
+                <div class="navbar  pull-right">
+                  <div class="navbar-inner">
+                    <a data-target=".navbar-responsive-collapse" data-toggle="collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a>
+                    <div class="nav-collapse collapse navbar-responsive-collapse">
+                    
+                    <div style="display: inline; float : left; padding-top: 5px;">
+                        <form method="GET" action="/search" >
+                          <i class="fa fa-search icon" > </i>
+                          <input type="text" placeholder="Search" id="keyword", name="keyword"> 
+                          <input type="submit" style="display: none" />
+                        </form>
+                    </div>
+                    <ul class="nav">
+                        <li {% if request.path  == "/" %}class="active"{% endif %} ><a href="/"  >Home</a></li>
+                        <li {% if 'tech_snippets' in request.path %} class="active" {% endif%} ><a href="/tech_snippets">Tech Snippets</a></li>
+                        <li {% if 'aboutme' in request.path %} class="active" {% endif%} ><a href="/aboutme">About me</a></li>                 
+                    </ul>
+                  </div>
+
+                  </div>
+                </div>
+              </div>
+            <!-- MAIN NAVIGATION -->  
+      </div>
+    </div>
+  </div>
+  <!-- /HEADER ROW -->
+
+  
+
+  {% block content %}
+  {% endblock %}
+
+<!-- /.Row View -->
+
+
+
+<!--Footer
+==========================-->
+
+<footer>
+    <div class="container">
+      <div class="row">
+        <a href="/privacy_policy">Privacy Policy</a>
+        
+
+        <div class="span6">Copyright 2021 OusLab  |  All Rights Reserved<br>
+        <small>Powered with Django. </small><br>
+        <small>Template Fornax </small>
+        </div>
+      </div>
+    </div>
+</footer>
+
+<!--/.Footer-->
+
+  </body>
+
+
+    <!-- SCRIPT 
+    ============================================================-->  
+    <script src="/static/frontend/js/jquery.js"></script>
+    <script src="/static/frontend/js/bootstrap.min.js"></script>
+
+    <!-- <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '',
+                autoLogAppEvents: true,
+                xfbml: true,
+                version: 'v3.2'
+            });
+        };
+    </script>
+    <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script> -->
+
+
+    {% block js %}
+    {% endblock %}
+</html>

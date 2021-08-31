@@ -1,0 +1,138 @@
+
+{% extends 'frontend/layouts/base.html' %}
+
+{% block title %} Tech snippets {% endblock %}
+
+{% block metadata %}
+  <meta content="My name is Oussama Ousmoi and this is my Blog page that i call OusLab, it's my gateway to share some of my projects and hobbies with the Internet" name='description'/>
+  <meta content='OusLab, Oussama Ousmoi' name='keywords'/>
+
+  <meta property="og:title" content="Tech snippets" />
+  <meta property="og:type" content="text/html" />
+  <meta property="og:url" content="http://{{ request.get_host}}" />
+  <meta property="og:image" content="http://{{ request.get_host}}/static/frontend/img/logo_ouslab.png" />
+
+{% endblock %}
+
+{% block content %}
+
+  
+<div class="container">
+  <!--PAGE TITLE-->
+
+
+<div class="row">
+
+
+  <div class="span9">
+    <!--Blog Post-->
+    {% for post in posts %}
+    <div class="blog-post" style="margin-bottom: 0; padding: 0 0;">
+     <a  href="/posts/{{ post.url_title }}"><h2 style="margin: 10px 0;"> <b>{{ post.title}}</b></h2></a>
+     <p style="margin: 0 0;">{{ post.description}}</p>	 
+
+      <div class="postmetadata" style="margin-bottom: 0;padding: 10px 0;">
+        <ul>
+            <li>
+              <i class="icon-user"></i> <a href="#">{{ post.owner.username}}</a>
+            </li>
+
+            <li>
+               <i class="icon-calendar"></i>{{ post.published_at}}
+            </li>
+
+            <li>
+              <i class="icon-comment"></i> <a href="#">{{ post.comment_set.count }} Comments</a>
+            </li>
+            <li>
+              <i class="icon-tags"></i>
+              {% for tag in post.tag_set.all %}
+                <a href="/posts/tag/{{tag.id}}">{{tag.name}}</a>,
+              {% endfor %} 
+               
+            </li>
+        </ul>
+      </div>
+
+
+
+    </div>
+
+   {% endfor %}
+    <!--===============-->
+
+  
+    <!--/.Blog Post-->
+
+    <!--Pagination-->
+    {% if posts.has_other_pages %}
+    <div class="pagination">
+      <ul>
+        {% if posts.has_previous %}
+        <li>
+          <a href="?page={{ posts.previous_page_number }}">Prev</a>
+        </li>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in posts.paginator.page_range %}
+          {% if posts.number == i %}
+            <li class="active">
+              <a href="javascript:void(0);">{{ i }}</a>
+            </li>
+          {% else %}           
+            <li>
+              <a href="?page={{ i }}">{{ i }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+        {% if posts.has_next %}
+          <li>
+            <a href="?page={{ posts.next_page_number }}">Next</a>
+          </li>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+      </ul>
+    </div>
+    {% endif %}	
+
+  <!--/.Pagination-->
+  </div>	
+
+
+
+  <div class="span3">
+    <div class="side-bar">
+
+      <h3>Categories</h3>
+        {% for categorie in categorie_list %}
+          <a href="/posts/categorie/{{categorie.id}}">{{ categorie.name  }}</a>, 
+        {% endfor %}
+
+    </div>
+
+    <div class="side-bar">
+      <h3>Tags</h3>
+      {% for tag in tag_list %}
+      <a href="/posts/tag/{{tag.id}}">{{tag.name}}</a>, 
+      {% endfor %}
+    </div>
+
+    {% include "frontend/buymeacoffee.html" %}
+
+    {% include "frontend/recent_posts.html" %}
+
+    {% include "frontend/ads/side_ads.html" %}
+    
+    <!-- {% include "frontend/donate.html" %} -->
+
+  </div>
+
+  <!--==================-->
+</div>
+</div>
+
+<!-- /.Row View -->
+
+{% endblock %}

@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Allow: /aboutme
+Allow: /privacy_policy
+Allow: /tech_snippets
+Allow: /tech_snippets/?
+Allow: /posts
+Allow: /posts/?
+
+
+Disallow: /media
+Disallow: /static
+Disallow: /dashboard
+Disallow: /dashboard/?
+
+Sitemap: https://www.ouslab.com/sitemap.xml
